@@ -5,4 +5,4 @@ If the requested book is no longer in the library program return book taken.
 The program language is Java and project is built with maven. 
 
 Below is a schematic class design of what the program represents
-![Class diagram](file:///Users/user/Downloads/book_library_design_model.svg)
+![book_library_design_model](https://user-images.githubusercontent.com/35895581/89738649-39426180-da72-11ea-8200-b77556904b4f.jpg)
