@@ -66,6 +66,22 @@ public class Main
 
     }
 
+    private static void grantLibraryUserBorrowRequest()
+    {
+        Scanner scanner = new Scanner(System.in);
+        Queue<Borrow> borrowRequestsQueue = Library.getBorrowQueue(); //queue to borrow
+
+        for (Borrow borrow: borrowRequestsQueue)
+        {
+            if (borrow.getBook().getTotalCopy() == 0)
+            {
+                System.out.println("Book taken");
+            }
+            // booksRequested.add(librarian.give(borrow));
+        }
+        //return booksRequested;
+    }
+
     //call this method to run library from I/O
     public static void runLibraryFromIO()
     {
@@ -110,7 +126,6 @@ public class Main
         }
     }
 
-
     //add books to library using scanner class
     private static void addBookToLib() {
         String  title, author;
@@ -148,21 +163,5 @@ public class Main
         {
             e.printStackTrace();
         }
-    }
-
-    private static void grantLibraryUserBorrowRequest()
-    {
-        Scanner scanner = new Scanner(System.in);
-        Queue<Borrow> borrowRequestsQueue = Library.getBorrowQueue(); //queue to borrow
-
-        for (Borrow borrow: borrowRequestsQueue)
-        {
-            if (borrow.getBook().getTotalCopy() == 0)
-            {
-                System.out.println("Book taken");
-            }
-           // booksRequested.add(librarian.give(borrow));
-        }
-        //return booksRequested;
     }
 }
