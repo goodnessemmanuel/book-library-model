@@ -57,9 +57,9 @@ public class Librarian extends Person
             {
                 Person p1 = left.getMember();
                 Person p2 = right.getMember();
-                if ( p2.role().equals("student") && p1.role().equals("teacher"))
+                if (p2.role().equals("student") && p1.role().equals("teacher"))
                 {
-                    return -1;
+                    return -1; //student borrow the same book as teacher swap them in the queue
                 }
             }
             return 0;

@@ -52,17 +52,17 @@ public class Main
         borrowRequestsQueue.offer(borrowTeacher1);
         borrowRequestsQueue.offer(borrowTeacher2);
 
-        //set library borrow request queue
-        library.setBorrowQueue(borrowRequestsQueue);
-        List<Book> requestBook = grantLibraryUserBorrowRequest();
-
-        //poll queue to grant borrow request;
-
+        //print poll request value to confirm queue is in other
         System.out.println("1st: "+ borrowRequestsQueue.poll());
         System.out.println("2nd: "+ borrowRequestsQueue.poll());
         System.out.println("3rd: "+ borrowRequestsQueue.poll());
         System.out.println("4th: "+ borrowRequestsQueue.poll());
 
+        //set library borrow request queue
+        library.setBorrowQueue(borrowRequestsQueue);
+        List<Book> requestedBook = grantLibraryUserBorrowRequest();
+
+        requestedBook.forEach(System.out::println);
 
     }
 
@@ -70,21 +70,34 @@ public class Main
     {
         Queue<Borrow> borrowRequestsQueue = Library.getBorrowQueue(); //queue to borrow
         List<Book> booksRequested = new ArrayList<>();
-        for (Borrow borrow: borrowRequestsQueue)
+        try
         {
-            if (borrow.getBook().getTotalCopy() <= 1) //last copy for library use
+            for (Borrow borrow: borrowRequestsQueue)
             {
-                System.out.println("Book Taken");
+                if (borrow.getBook().getTotalCopy() <= 1) //last copy is reserved for library use
+                {
+                    System.out.println("Book Taken");
+                    break;
+                }
+                else
+                {
+                    booksRequested.add(librarian.give(borrow));
+                }
+                borrowRequestsQueue.remove();
             }
-            else
-            {
-                booksRequested.add(librarian.give(borrow));
-            }
+        }
+        catch (NoSuchElementException e)
+        {
+            System.err.println(e.getMessage());
         }
         return booksRequested;
     }
 
-    //call this method to run library from I/O
+    /**
+     * call this method to run library from I/O
+     * add files and resume library operation
+     * when application come back on
+     */
     public static void runLibraryFromIO()
     {
         library = new Library();
@@ -96,7 +109,6 @@ public class Main
             System.out.println("\nEnter 1 to save and exit");
             System.out.println("\nEnter 2 to list book in library");
             System.out.println("\nEnter 3 to add book to library");
-
             int response = sc.nextInt();
             switch (response)
             {
@@ -155,7 +167,7 @@ public class Main
         running = false;
         fileName = sc.next();
         FileOutputStream fos = null;
-        ObjectOutputStream oos = null;
+        ObjectOutputStream oos = null; //write object stream
         try
         {
             File file = new File(fileName + ".ser");
