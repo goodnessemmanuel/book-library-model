@@ -8,6 +8,9 @@ public class Main
 {
     static Library library;
     static Librarian librarian;
+    static String fileName;
+    static Scanner sc;
+    static boolean running = true;
 
     public static void main(String[] args)
     {
@@ -67,15 +70,13 @@ public class Main
     {
         System.out.println("Choose file to load ");
         fileName = sc.next();
-        //note you can check if file exists before continuing i.e.
-        //File file = new File(fileName) and if(file.exists) ...
         FileInputStream fis = null;
         ObjectInputStream ois = null;
         try
         {
             fis = new FileInputStream(new File(fileName + ".ser")); //save with dot ser for serializable object
             ois = new ObjectInputStream(fis);
-            lib = (Library) ois.readObject();
+            library = (Library) ois.readObject();
             fis.close();
             ois.close();
         }
@@ -84,6 +85,21 @@ public class Main
             e.printStackTrace();
         }
     }
+
+    //run libra
+    private static void addBookToLib() {
+        String  title, author;
+        int isbn;
+        System.out.println("\nEnter book title ");
+        title = sc.next();
+        System.out.println("\nEnter book author ");
+        author = sc.next();
+        System.out.println("\nEnter book isbn ");
+        isbn = sc.nextInt();
+        Book book = new Book(isbn, title, author);
+        library.addBook(book);
+    }
+
     private static void saveAndQuit()
     {
         System.out.println("Enter a file name ");
@@ -96,7 +112,7 @@ public class Main
             File file = new File(fileName + ".ser");
             fos = new FileOutputStream(file);
             oos = new ObjectOutputStream(fos);
-            oos.writeObject(lib); //takes only object that are serializable else an exception will be thrown
+            oos.writeObject(library); //takes only object that are serializable else an exception will be thrown
             fos.flush();
             oos.flush();
             fos.close();
@@ -109,6 +125,7 @@ public class Main
             e.printStackTrace();
         }
     }
+
     private static void grantLibraryUserBorrowRequest()
     {
         Scanner scanner = new Scanner(System.in);
