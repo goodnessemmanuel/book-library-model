@@ -24,12 +24,6 @@ public class Librarian extends Person
 
     public Book give(Borrow borrow)
     {
-        Queue<Borrow> borrowQueue = Library.getBorrowQueue();
-
-        for (Borrow borrow1: borrowQueue)
-        {
-
-        }
         Book book = borrow.getBook();
         int currentCopy = book.getTotalCopy();
         book.setTotalCopy(currentCopy - 1);
