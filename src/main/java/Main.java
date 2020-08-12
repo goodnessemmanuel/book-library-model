@@ -96,11 +96,18 @@ public class Main
             System.out.println("\nEnter 3 to add book to library");
 
             int response = sc.nextInt();
-            switch (response) {
-                case 0 -> loadLibraryBooks();
-                case 1 -> saveAndQuit();
-                case 2 -> System.out.println(library.toString());
-                case 3 -> addBookToLib();
+            switch (response)
+            {
+                case 0: loadLibraryBooks();
+                    break;
+                case 1: saveAndQuit();
+                    break;
+                case 2:
+                    System.out.println(library.toString());
+                    break;
+                case 3:
+                    addBookToLib();
+                    break;
             }
         }
         System.exit(0);
@@ -152,7 +159,7 @@ public class Main
             File file = new File(fileName + ".ser");
             fos = new FileOutputStream(file);
             oos = new ObjectOutputStream(fos);
-            oos.writeObject(library); //takes only object that are serializable else an exception will be thrown
+            oos.writeObject(library);
             fos.flush();
             oos.flush();
             fos.close();
