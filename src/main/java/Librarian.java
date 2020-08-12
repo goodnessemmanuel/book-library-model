@@ -53,7 +53,7 @@ public class Librarian extends Person
         @Override
         public int compare(Borrow left, Borrow right)
         {
-            /*if(left.equals(right))
+            if(left.equals(right))
             {
                 Person p1 = left.getMember();
                 Person p2 = right.getMember();
@@ -61,7 +61,7 @@ public class Librarian extends Person
                 {
                     return -1;
                 }
-            }*/
+            }
             return 0;
         }
     }

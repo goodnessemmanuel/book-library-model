@@ -54,7 +54,7 @@ public class Main
 
         //set library borrow request queue
         library.setBorrowQueue(borrowRequestsQueue);
-        grantLibraryUserBorrowRequest();
+        List<Book> requestBook = grantLibraryUserBorrowRequest();
 
         //poll queue to grant borrow request;
 
@@ -66,20 +66,22 @@ public class Main
 
     }
 
-    private static void grantLibraryUserBorrowRequest()
+    private static List<Book> grantLibraryUserBorrowRequest()
     {
-        Scanner scanner = new Scanner(System.in);
         Queue<Borrow> borrowRequestsQueue = Library.getBorrowQueue(); //queue to borrow
-
+        List<Book> booksRequested = new ArrayList<>();
         for (Borrow borrow: borrowRequestsQueue)
         {
-            if (borrow.getBook().getTotalCopy() == 0)
+            if (borrow.getBook().getTotalCopy() <= 1) //last copy for library use
             {
-                System.out.println("Book taken");
+                System.out.println("Book Taken");
             }
-            // booksRequested.add(librarian.give(borrow));
+            else
+            {
+                booksRequested.add(librarian.give(borrow));
+            }
         }
-        //return booksRequested;
+        return booksRequested;
     }
 
     //call this method to run library from I/O
