@@ -135,7 +135,8 @@ public class Main
         ObjectInputStream ois = null;
         try
         {
-            fis = new FileInputStream(new File(fileName + ".ser")); //save with dot ser for serializable object
+            //save with dot ser
+            fis = new FileInputStream(new File(fileName + ".ser"));
             ois = new ObjectInputStream(fis);
             library = (Library) ois.readObject();
             fis.close();
@@ -167,7 +168,7 @@ public class Main
         running = false;
         fileName = sc.next();
         FileOutputStream fos = null;
-        ObjectOutputStream oos = null; //write object stream
+        ObjectOutputStream oos = null; //write object to output stream
         try
         {
             File file = new File(fileName + ".ser");

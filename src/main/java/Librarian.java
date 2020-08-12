@@ -13,7 +13,6 @@ import java.util.Queue;
 
 public class Librarian extends Person
 {
-
     private static Queue<Borrow> borrowQueue;
 
     public Librarian(String firstName, String lastName, String gender)
@@ -29,7 +28,6 @@ public class Librarian extends Person
         book.setTotalCopy(currentCopy - 1);
         return book;
     }
-
 
     @Override
     public String role()
