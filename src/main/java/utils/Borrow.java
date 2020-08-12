@@ -11,10 +11,12 @@ public class Borrow
 {
     private final Book book;
     private String dateBorrowed;
+    private final Person member;
 
-    public Borrow(Book book)
+    public Borrow(Person member, Book book)
     {
         this.book = book;
+        this.member = member;
         setDateBorrowed();
     }
 
@@ -61,6 +63,12 @@ public class Borrow
         return "Borrow{" +
                 "book=" + book.toString() +
                 ", dateBorrowed='" + dateBorrowed + '\'' +
-                '}';
+                '}' + ", By " + member.getFullName()
+                + ", " + member.role();
+    }
+
+    public Person getMember()
+    {
+        return member;
     }
 }

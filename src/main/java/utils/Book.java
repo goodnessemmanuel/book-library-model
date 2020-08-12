@@ -8,7 +8,7 @@ import java.util.Objects;
  * the object and add it to the library
  */
 
-public class Book implements Serializable //serialize book object during storage for optimization
+public class Book implements Serializable //serialize book object during external storage for optimization
 {
     private int isbn;
     private String title;

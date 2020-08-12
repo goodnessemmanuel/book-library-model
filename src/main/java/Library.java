@@ -1,6 +1,10 @@
 import utils.Book;
+import utils.Borrow;
+
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.stream.Collectors;
 
 /**
@@ -13,6 +17,7 @@ public class Library
 {
     private String name;
     private static List<Book> books;
+    private static Queue<Borrow> borrowQueue;
 
     public Library()
     {
@@ -23,6 +28,7 @@ public class Library
     {
         this.name = name;
         books = new ArrayList<>(10); //initial capacity
+        borrowQueue = new LinkedList<>();
     }
 
     public void setName(String name)
@@ -42,6 +48,16 @@ public class Library
         {
             books.add(book);
         }
+    }
+
+    public void setBorrowQueue(Queue<Borrow> queue)
+    {
+        borrowQueue = queue;
+    }
+
+    public static Queue<Borrow> getBorrowQueue()
+    {
+        return borrowQueue;
     }
 
     /**

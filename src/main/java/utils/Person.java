@@ -10,7 +10,6 @@ public abstract class Person
     private String firstName;
     private String lastName;
     private String gender;
-    private Borrow borrowRequest;
 
     public Person(String firstName, String lastName, String gender)
     {
@@ -52,22 +51,6 @@ public abstract class Person
     public String getFullName()
     {
         return String.format("%s %s", firstName, lastName);
-    }
-
-    public Borrow borrow(Book book)
-    {
-        setBorrowRequest(book);
-        return getBorrowRequest();
-    }
-
-    public void setBorrowRequest(Book bookToBorrow)
-    {
-        this.borrowRequest = new Borrow(bookToBorrow);
-    }
-
-    public Borrow getBorrowRequest()
-    {
-        return borrowRequest;
     }
 
     /**

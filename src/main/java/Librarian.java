@@ -4,6 +4,8 @@ import utils.Person;
 import utils.Student;
 
 import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.Queue;
 
 /**
  * Librarian class
@@ -12,18 +14,28 @@ import java.util.Comparator;
 public class Librarian extends Person
 {
 
+    private static Queue<Borrow> borrowQueue;
+
     public Librarian(String firstName, String lastName, String gender)
     {
         super(firstName, lastName, gender);
+        borrowQueue = new LinkedList<>();
     }
 
     public Book give(Borrow borrow)
     {
+        Queue<Borrow> borrowQueue = Library.getBorrowQueue();
+
+        for (Borrow borrow1: borrowQueue)
+        {
+
+        }
         Book book = borrow.getBook();
         int currentCopy = book.getTotalCopy();
         book.setTotalCopy(currentCopy - 1);
         return book;
     }
+
 
     @Override
     public String role()
@@ -31,7 +43,7 @@ public class Librarian extends Person
         return "librarian";
     }
 
-    public BorrowComparator<? extends Person> prioritize ()
+    public static BorrowComparator<? extends Person> firstComeFirstServe()
     {
         return new BorrowComparator<>();
     }
@@ -42,50 +54,21 @@ public class Librarian extends Person
      * @param <T> Comparator generic
      */
 
-    private static class BorrowComparator<T> implements Comparator<Person>
+    private static class BorrowComparator<T> implements Comparator<Borrow>
     {
         @Override
-        public int compare(Person left, Person right)
+        public int compare(Borrow left, Borrow right)
         {
-            if(left.role().equals("student") && right.role().equals("teacher")
-            && left.getBorrowRequest().equals(right.getBorrowRequest())) //student order the same book as teacher
+            /*if(left.equals(right))
             {
-                return 1; //swap position so teacher should come first
-            }
-            if((left.role().equals("student") && right.role().equals("student")) ||
-                    (right.role().equals("student") && left.role().equals("student")  &&
-                    left.getBorrowRequest().equals(right.getBorrowRequest())))
-            {
-                Student student1 = (Student)left;
-                Student student2 = (Student)right;
-                if (checkSenior(student2.getsClass().getName()) && !checkSenior(student1.getsClass().getName()))
+                Person p1 = left.getMember();
+                Person p2 = right.getMember();
+                if ( p2.role().equals("student") && p1.role().equals("teacher"))
                 {
-                    return -1; //senior student order the same book with junior student, swap them
+                    return -1;
                 }
-            }
-
+            }*/
             return 0;
         }
-
-        private boolean checkSenior(String name) //check student seniority
-        {
-            boolean seniorStatus = true;
-            switch (name.toLowerCase())
-            {
-                case "jss1":
-                case "jss2":
-                case "jss3":
-                    seniorStatus = false;
-                    break;
-
-                case "ss1":
-                case "ss2":
-                case "ss3":
-                    seniorStatus = true;
-                break;
-            }
-            return seniorStatus;
-        }
-
     }
 }

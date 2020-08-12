@@ -12,7 +12,8 @@ class BorrowTest
     void shouldDisplayCorrectDate()
     {
         String expected = "11/8/2020"; //date as at when I wrote this test
-        Borrow borrow = new Borrow(new Book(1232, "James Smith", "Paul T."));
+        Student student = new Student(1, "Jude", "Ken", "M", new Class("SS1"));
+        Borrow borrow = new Borrow(student, new Book(1232, "James Smith", "Paul T."));
         String actual = borrow.getDateBorrowed();
 
         assertEquals(expected, actual, "Should display date book was borrowed");

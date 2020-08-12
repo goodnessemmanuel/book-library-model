@@ -1,19 +1,22 @@
 import utils.*;
 import utils.Class;
 
+import java.io.*;
 import java.util.*;
 
 public class Main
 {
     static Library library;
+    static Librarian librarian;
 
     public static void main(String[] args)
     {
         library = new Library("Nelson Mandela");
 
+
         //create book object
         Book book1 =  new Book(3421, "Fundamentals of Physics", "P.N Okeke");
-        book1.addCopies(4);
+        book1.addCopies(0);
         Book book2 =  new Book(1234, "Chemistry", "Thomas J.", 2);
         Book book3 =  new Book(3461, "Dominion Attitude", "Paul Joan", 5);
 
@@ -25,7 +28,7 @@ public class Main
         System.out.println(library.toString()); //view all library book
 
         //create a liberian to take care of library
-        Librarian librarian = new Librarian("James", "Aristole", "male");
+        librarian = new Librarian("James", "Aristole", "male");
 
         //create teachers and student to use library
         Student student1 = new Student(1, "John", "Tennison", "male", new Class("Jss1"));
@@ -34,63 +37,91 @@ public class Main
         Teacher teacher2 = new Teacher(2, "Andrew", "Gibson", "Male");
 
         //initiate all borrow request by teacher and/or student
-        Borrow student1RequestBook1 = student1.borrow(book1);
-        Borrow studentRequestBook2 = student2.borrow(book1);
-        Borrow teacher1RequestBook1 = teacher1.borrow(book1);
+        Borrow borrowStudent1 = new Borrow(student1, book1);
+        Borrow borrowStudent2 = new Borrow(student2, book2);
+        Borrow borrowTeacher1 = new Borrow(teacher1, book1);
+        Borrow borrowTeacher2 = new Borrow(teacher2, book3);
 
-        System.out.println(student1RequestBook1.equals(teacher1RequestBook1));
+        //borrowers queue up on first come first serve base
+        Queue<Borrow> borrowRequestsQueue = new LinkedList<>();
+        borrowRequestsQueue.offer(borrowStudent1);
+        borrowRequestsQueue.offer(borrowStudent2);
+        borrowRequestsQueue.offer(borrowTeacher1);
+        borrowRequestsQueue.offer(borrowTeacher2);
 
-        //map each teacher or student to their borrow request
-        Map<Person, Borrow> borrowRequestMap = new HashMap<>();
+        //set library borrow request queue
+        library.setBorrowQueue(borrowRequestsQueue);
 
-        borrowRequestMap.put(teacher1, teacher1RequestBook1);
-        borrowRequestMap.put(student1, student1RequestBook1);
-        borrowRequestMap.put(student2, studentRequestBook2);
 
-        //get the borrow order of priority from the librarian
-        //BorrowComparator<? extends Person> comparator = new BorrowComparator<>();
+        //poll queue to grant borrow request;
 
-        /*Queue<Person> borrowRequestsQueue = new PriorityQueue<>(2, librarian.prioritize());
-        borrowRequestsQueue.offer(student1);
-        borrowRequestsQueue.offer(student2);
-        borrowRequestsQueue.offer(teacher1);*/
-
-        Set<Person> people = borrowRequestMap.keySet();
-        Queue<Person> borrowRequestsQueue = new PriorityQueue<>(3, librarian.prioritize());
-        people.forEach(borrowRequestsQueue::offer);
-//        borrowRequestsQueue.offer(borrowRequestMap.get(student1));
-//        borrowRequestsQueue.offer(student2);
-//        borrowRequestsQueue.offer(teacher1);
-
-        //borrowRequestsQueue.forEach(b -> System.out::println);
-        System.out.println("check: "+ borrowRequestsQueue.peek());
         System.out.println("1st: "+ borrowRequestsQueue.poll());
         System.out.println("2nd: "+ borrowRequestsQueue.poll());
         System.out.println("3rd: "+ borrowRequestsQueue.poll());
-        //librarian.
-
-        //adding multiple books to library
-        //loadLibraryBooks();
-
-        Person student = new Student(1, "", "", "", new Class("Jss1"));
-        Person teacher = new Teacher(1, "", "", "Male");
+        System.out.println("4th: "+ borrowRequestsQueue.poll());
 
 
     }
 
     private static void loadLibraryBooks()
     {
-        //create a book
-        Book book1 = new Book(3421, "Fundamentals of Physics", "P.N Okeke");
-        //add more copies of the book
-        //book1 = new BookCopy(book1, 5);
+        System.out.println("Choose file to load ");
+        fileName = sc.next();
+        //note you can check if file exists before continuing i.e.
+        //File file = new File(fileName) and if(file.exists) ...
+        FileInputStream fis = null;
+        ObjectInputStream ois = null;
+        try
+        {
+            fis = new FileInputStream(new File(fileName + ".ser")); //save with dot ser for serializable object
+            ois = new ObjectInputStream(fis);
+            lib = (Library) ois.readObject();
+            fis.close();
+            ois.close();
+        }
+        catch (IOException | ClassNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+    }
+    private static void saveAndQuit()
+    {
+        System.out.println("Enter a file name ");
+        running = false;
+        fileName = sc.next();
+        FileOutputStream fos = null;
+        ObjectOutputStream oos = null;
+        try
+        {
+            File file = new File(fileName + ".ser");
+            fos = new FileOutputStream(file);
+            oos = new ObjectOutputStream(fos);
+            oos.writeObject(lib); //takes only object that are serializable else an exception will be thrown
+            fos.flush();
+            oos.flush();
+            fos.close();
+            oos.close();
 
-        //utils.Book  bookCopy = new BookCopy(book, 6);
-        //BookCopy book1 = new BookCopy(new utils.Book(3421, "Fundamentals of Physics", "P.N Okeke"), 5);
+        }
+        catch (IOException e)
+        {
+            System.out.println("Inside write catch exception block");
+            e.printStackTrace();
+        }
+    }
+    private static void grantLibraryUserBorrowRequest()
+    {
+        Scanner scanner = new Scanner(System.in);
+        Queue<Borrow> borrowRequestsQueue = Library.getBorrowQueue(); //queue to borrow
 
-        library.addBook(new Book(3421, "Fundamentals of Physics", "P.N Okeke"));
-        library.addBook(new Book(56721, "Physical Chemistry", "THOMPSON"));
-        library.addBook(new Book(92213, "Legacy Key", "John Keys"));
-        library.addBook(new Book(34613, "Dominion Attitude", "Paul Joan"));
+        for (Borrow borrow: borrowRequestsQueue)
+        {
+            if (borrow.getBook().getTotalCopy() == 0)
+            {
+                System.out.println("Book taken");
+            }
+           // booksRequested.add(librarian.give(borrow));
+        }
+        //return booksRequested;
     }
 }
