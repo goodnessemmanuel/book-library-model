@@ -19,7 +19,7 @@ public class Main
 
         //create book object
         Book book1 =  new Book(3421, "Fundamentals of Physics", "P.N Okeke");
-        book1.addCopies(0);
+        book1.addCopies(3);
         Book book2 =  new Book(1234, "Chemistry", "Thomas J.", 2);
         Book book3 =  new Book(3461, "Dominion Attitude", "Paul Joan", 5);
 
@@ -54,7 +54,7 @@ public class Main
 
         //set library borrow request queue
         library.setBorrowQueue(borrowRequestsQueue);
-
+        grantLibraryUserBorrowRequest();
 
         //poll queue to grant borrow request;
 
@@ -64,6 +64,30 @@ public class Main
         System.out.println("4th: "+ borrowRequestsQueue.poll());
 
 
+    }
+
+    //call this method to run library from I/O
+    public static void runLibraryFromIO()
+    {
+        library = new Library();
+        sc = new Scanner(System.in);
+
+        while (running)
+        {
+            System.out.println("\nEnter 0 to load library");
+            System.out.println("\nEnter 1 to save and exit");
+            System.out.println("\nEnter 2 to list book in library");
+            System.out.println("\nEnter 3 to add book to library");
+
+            int response = sc.nextInt();
+            switch (response) {
+                case 0 -> loadLibraryBooks();
+                case 1 -> saveAndQuit();
+                case 2 -> System.out.println(library.toString());
+                case 3 -> addBookToLib();
+            }
+        }
+        System.exit(0);
     }
 
     private static void loadLibraryBooks()
@@ -86,7 +110,8 @@ public class Main
         }
     }
 
-    //run libra
+
+    //add books to library using scanner class
     private static void addBookToLib() {
         String  title, author;
         int isbn;
@@ -121,7 +146,6 @@ public class Main
         }
         catch (IOException e)
         {
-            System.out.println("Inside write catch exception block");
             e.printStackTrace();
         }
     }
